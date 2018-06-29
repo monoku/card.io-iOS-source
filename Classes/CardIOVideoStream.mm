@@ -186,7 +186,7 @@
     _cameraConfigurationSemaphore = dispatch_semaphore_create(1); // parameter of `1` implies "allow access to only one thread at a time"
 #if USE_CAMERA
     _captureSession = [[AVCaptureSession alloc] init];
-    _camera = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    _camera = [self frontCamera];
     _previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.captureSession];
     dmz = dmz_context_create();
 #elif SIMULATE_CAMERA
@@ -195,6 +195,16 @@
   }
 
   return self;
+}
+
+- (AVCaptureDevice *)frontCamera {
+  NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+  for (AVCaptureDevice *device in devices) {
+      if ([device position] == AVCaptureDevicePositionFront) {
+          return device;
+      }
+  }
+  return nil;
 }
 
 - (void)dealloc {

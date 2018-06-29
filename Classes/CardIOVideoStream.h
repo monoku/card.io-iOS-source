@@ -33,6 +33,7 @@
 - (BOOL)hasAutofocus;
 
 - (void)refocus;
+- (AVCaptureDevice *)frontCamera;
 
 - (void)startSession;
 - (void)stopSession;
